@@ -17,5 +17,8 @@ trait GameDAO {
   /* get the current board from memory */
   def getBoard(boardId: String): Option[Board]
 
+  /* remove the current game */
+  def removeGame(boardId: String): Boolean
+
 
 }

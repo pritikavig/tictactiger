@@ -46,12 +46,13 @@ class TicTacToeEngineImpl @Inject() (gd: GameDAO) extends TicTacToeEngine {
 
       gd.getBoard(channelName) match {
         case Some(board) => board.makeMove(move)
+        case None => false
       }
   }
 
   // Clear the current game
   def gameOver(channelName: String): Boolean = {
-    true
+    gd.removeGame(channelName)
   }
 
 

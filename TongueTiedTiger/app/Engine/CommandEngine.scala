@@ -1,30 +1,43 @@
 package Engine
 import javax.inject._
+import scala.util.Try
+
+/*
+  Class to sort the command arguments specified with /ttt
+ */
 
 @Singleton
 class CommandEngine @Inject() (ttt: TicTacToeEngine) {
+  val moveRegex = """move (?<!\S)\d(?!\S)""".r
 
-  def sortCommands(text: String, channelName: String): String = {
+  def sortCommands(text: String, channelName: String, username: String): String = {
 
-    text match {
+    (text, text(0)) match {
 
-        // case game display game
-      case "game" => ttt.showBoard(channelName) match { case Some(str) => str; case None => "Board not found in channel."}
+      // case game display game
+      case ("game", _) => ttt.showBoard(channelName).getOrElse("Board not found")
 
-        // case help send help message
-      case "help" => ttt.help()
+      // case class to print help message
+      case ("help", _) => ttt.help()
 
-        // end game
-      case "gameover" => ttt.gameOver(channelName) match { case true => "Game ended successfully."; case false => "Game not found." }
+      // end game
+      case ("gameover", _) => ttt.gameOver(channelName) match { case true => "Game ended successfully."; case false => "Game not found." }
 
-//      // case @user start game
-//      case text takeleft 1 == '@' =>
-//
-//      // case move <int> make move
-//      case "move" =>
+      // case move <int> make move
+      case (moveRegex(), 'm' ) => Try(text.split(" ")(1).toInt).toOption match { case Some(d) if d < 8 =>
+        ttt.attemptMove(channelName, username, d) match { case true => ttt.showBoard(channelName).getOrElse("Error displaying board"),
+          case false => "Invalid move, try again." }
+      case None => "Did not specify a digit to represent a space in the board. /ttt help for directions." }
 
-        // case default = invalid command
-      case _ => "Invalid arguments. For help, type /ttt help"
+      // case @user start game
+      case (_, '@') => ttt.createGame(username, text.stripPrefix("@"), channelName) match {
+        case true => "Game created!\\n" +
+          ttt.showBoard(channelName).getOrElse("Error displaying board")
+        case false => "Game already exists in channel."
+      }
+
+      // case default = invalid command
+      case (_, _) => "Invalid arguments. For help, type /ttt help"
 
     }
   }

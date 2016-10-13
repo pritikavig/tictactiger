@@ -36,8 +36,8 @@ class HomeController @Inject() ( ttt: TicTacToeEngine,
   def index = Action { request =>
 
     val slackData = new SlackData(request)
-    (slackData.command, slackData.channelId) match {
-      case (Some(command), Some(cid)) => Ok(sendMessage(c.sortCommands(command, cid))).as("application/json")
+    (slackData.command, slackData.channelId, slackData.username) match {
+      case (Some(command), Some(cid), Some(uid)) => Ok(sendMessage(c.sortCommands(command, cid, uid))).as("application/json")
       case _ => BadRequest("Error sending data.")
     }
   }

@@ -8,7 +8,6 @@ import models.Board
 /*
   The GameDAO mock impl stores the current boards in memory - will be wiped when server is restarted
  */
-@Singleton
 class GameDAOMockImpl extends GameDAO {
 
   /* Static hash table as in memory controllers.datastore */
@@ -21,7 +20,7 @@ class GameDAOMockImpl extends GameDAO {
 
   /* if no board exists for current channel, insert & return true */
   def insertBoard(board: Board): Boolean = {
-    def successfulInsert(b: Option[Board]): Boolean = b map(_=> false) getOrElse true
+    def successfulInsert(b: Option[Board]): Boolean = b match { case Some(x) => true; case None => false }
     successfulInsert(GameDataStore put (board.boardId, board))
   }
 
@@ -33,6 +32,11 @@ class GameDAOMockImpl extends GameDAO {
   /* get the current board from memory */
   def getBoard(boardId: String): Option[Board] = {
     GameDataStore.get(boardId)
+  }
+
+  /* remove game from memory */
+  def removeGame(boardId: String): Boolean = {
+    GameDataStore.remove(boardId) match { case Some(x) => true; case None => false }
   }
 
 }

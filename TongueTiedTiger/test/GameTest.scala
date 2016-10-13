@@ -1,4 +1,5 @@
-import models.{Player, Board, Move}
+
+import models.{Board, Move, Player}
 import org.scalatest._
 
 
@@ -73,5 +74,6 @@ class GameTest extends FlatSpec with Matchers {
     board1.isFull() should be(false)
     board3.isFull() should be(true)
   }
+
 
 }

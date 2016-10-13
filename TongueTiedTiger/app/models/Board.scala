@@ -58,9 +58,12 @@ case class Board( boardId: String,
 
   // Prints the state of the board
   def prettyPrint(): String = {
-    s"| ${state(0)} | ${state(1)} | ${state(2)} |\n" +
-      s"| ${state(3)} | ${state(4)} | ${state(5)} |\n" +
-      s"| ${state(6)} | ${state(7)} | ${state(8)} |"
+    val curPlayer = if (turnIsPlayer1) players(0).playerId else players(1).playerId
+
+    s"| ${state(0)} | ${state(1)} | ${state(2)} |\\n" +
+      s"| ${state(3)} | ${state(4)} | ${state(5)} |\\n" +
+      s"| ${state(6)} | ${state(7)} | ${state(8)} |\\n" +
+    s"It's $curPlayer's turn to move!"
   }
 
 }
