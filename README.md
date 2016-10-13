@@ -25,6 +25,8 @@ Supported commands:
   - /ttt gameover will end the current game
   - /ttt move <int> will request a move at position int. To see the board
         configuration, you can run /ttt help
+
+        The integration checks for a known token. It is currently set up for [this team](https://ae30957667test0.slack.com/messages/general/) 
   
 For more documentation on design decisions and models, see the project root directory TongueTiedTiger/
 
