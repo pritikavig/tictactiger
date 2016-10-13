@@ -7,37 +7,71 @@ import java.util.UUID
  */
 case class Board( boardId: UUID,
                   players: Array[Player],
-                  state: Array[Int],
-                  turnIsPlayer1: Boolean )
-//                         ) {
+                  var state: Array[Char] = Array.fill(9)(' '),
+                  var turnIsPlayer1: Boolean = true
+                ) extends Game {
+
+
+
 //
 //  /*
 //    Returns a string with a message to prompt the next desired action
 //   */
 //  def communicateStatus: String
 //
-//  /*
-//    Attempts to make a move on the board - returns true if made successfully
-//    Toggles the element of state that tracks turns (turnIsPlayer1)
-//   */
-//  def makeMove(move: Move): Boolean
-//
-//
-//  /*
-//    Returns the Player current turn
-//   */
-//  def whoseTurn: Player
-//
-//  /*
-//   Checks to see if the game is a Draw - Boolean
-//   */
-//  def isDraw: Boolean
-//
-//  /*
-//    Checks to see if the game is a win - Boolean
-//  */
-//  def isWinning: Boolean
-//
-//}
-//
+  /*
+    Attempts to make a move on the board - returns true if made successfully
+        Private func toggles the element of state that tracks turns (turnIsPlayer1) if move made
+   */
+  def makeMove(move: Move): Boolean = {
+    def finishedTurn = { turnIsPlayer1 = !turnIsPlayer1 }
+    def moveSquare: Boolean = { state(move.square) = move.player.playerType; finishedTurn; true }
+
+    if ( move.player.playerId != whoseTurn().playerId ) { return false }
+
+    state(move.square) match {
+      case 'X' => false
+      case 'O' => false
+      case _ => moveSquare
+    }
+
+  }
+
+  /*
+    Returns the Player current turn
+   */
+   def whoseTurn(): Player = {
+     if (turnIsPlayer1) players(0) else players(1)
+   }
+
+  /*
+   Checks to see if the board is a full - Boolean
+   */
+  def isFull(): Boolean = {
+    !state.contains(' ')
+  }
+
+  /*
+    Checks to see if the game is a win - Boolean
+  */
+  def isWinning(): Boolean = {
+    def isSame(x: Char): Boolean = x == 'X' || x == 'O'
+    def checkWin(l: List[Array[Char]]): Boolean = l.map { _.forall{isSame} }.contains(true)
+    def rowWin = checkWin( state.sliding(3).toList )
+    def colWin = checkWin( List( Array( state(0), state(3), state(6) ), Array(state(1), state(4), state(7)),
+      Array(state(2), state(5), state(8))) )
+    def diagWin = checkWin( List( Array( state(0), state(4), state(7) ), Array(state(2), state(4), state(8))) )
+
+    List(rowWin, colWin, diagWin).contains(true)
+
+  }
+
+  def prettyPrint(): String = {
+    s"| ${state(0)} | ${state(1)} | ${state(2)} |\n" +
+      s"| ${state(3)} | ${state(4)} | ${state(5)} |\n" +
+      s"| ${state(6)} | ${state(7)} | ${state(8)} |"
+  }
+
+}
+
 
