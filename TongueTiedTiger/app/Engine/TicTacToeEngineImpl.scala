@@ -20,7 +20,7 @@ class TicTacToeEngineImpl @Inject() (gd: GameDAO) extends TicTacToeEngine {
   // If a game doesn't already exist in the channel, create one!
   def createGame(username1: String, username2: String, channelName: String): Boolean = {
     val player1 = Player(username1, 'X')
-    val player2 = Player(username2, 'Y')
+    val player2 = Player(username2, 'O')
     val board = Board(channelName, Array(player1, player2))
 
     gd.containsBoard(board.boardId) match {
@@ -54,6 +54,19 @@ class TicTacToeEngineImpl @Inject() (gd: GameDAO) extends TicTacToeEngine {
   def gameOver(channelName: String): Boolean = {
     gd.removeGame(channelName)
   }
+
+
+  // Return true if game is over and no winner
+  def isWon(channelName: String): Boolean = {
+    gd.getBoard(channelName) match { case Some(b) => b.isWinningBoard(); case _ => false}
+  }
+
+
+  //  Return true if winning board
+  def isOver(channelName: String): Boolean = {
+    gd.getBoard(channelName) match { case Some(b) => b.isFull(); case _ => false}
+  }
+
 
 
 }

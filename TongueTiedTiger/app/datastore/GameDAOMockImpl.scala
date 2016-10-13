@@ -20,7 +20,7 @@ class GameDAOMockImpl extends GameDAO {
 
   /* if no board exists for current channel, insert & return true */
   def insertBoard(board: Board): Boolean = {
-    def successfulInsert(b: Option[Board]): Boolean = b match { case Some(x) => true; case None => false }
+    def successfulInsert(b: Option[Board]): Boolean = b match { case Some(x) => false; case None => true }
     successfulInsert(GameDataStore put (board.boardId, board))
   }
 

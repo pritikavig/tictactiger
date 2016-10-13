@@ -1,7 +1,7 @@
 package models
 
 /*
-  Actions that a Game must implement
+  Actions that a Game must implement - extended by Board
  */
 
 trait Game {
@@ -10,7 +10,7 @@ trait Game {
 
   def makeMove(move: Move): Boolean
 
-  def isWinning(): Boolean
+  def isWinningBoard(): Boolean
 
   def isFull(): Boolean
 

@@ -23,7 +23,7 @@ import services.SlackData
 
 @Singleton
 class HomeController @Inject() ( ttt: TicTacToeEngine,
-                                 c: CommandEngine) extends Controller {
+                                 c: CommandEngine ) extends Controller {
 
   def sendMessage(message: String ): JsValue = {
 
@@ -36,8 +36,8 @@ class HomeController @Inject() ( ttt: TicTacToeEngine,
   def index = Action { request =>
 
     val slackData = new SlackData(request)
-    (slackData.command, slackData.channelId, slackData.username) match {
-      case (Some(command), Some(cid), Some(uid)) => Ok(sendMessage(c.sortCommands(command, cid, uid))).as("application/json")
+    (slackData.command, slackData.channelId, slackData.username, slackData.isValidToken) match {
+      case (Some(command), Some(cid), Some(uid), true) => Ok(sendMessage(c.sortCommands(command, cid, uid))).as("application/json")
       case _ => BadRequest("Error sending data.")
     }
   }

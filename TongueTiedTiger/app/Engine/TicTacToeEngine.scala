@@ -29,5 +29,15 @@ trait TicTacToeEngine {
    */
   def gameOver(channelName: String): Boolean
 
+  /*
+    Return true if game is over and no winner
+   */
+
+  def isWon(channelName: String): Boolean
+
+  /*
+    Return true if winning board
+   */
+  def isOver(channelName: String): Boolean
 
 }

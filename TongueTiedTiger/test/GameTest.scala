@@ -54,15 +54,31 @@ class GameTest extends FlatSpec with Matchers {
     val board1: Board = Board(boardId, players)
     val board2: Board = Board(boardId, players)
     val board3: Board = Board(boardId, players)
+    val board4: Board = Board(boardId, players)
+    val board5: Board = Board(boardId, players)
     board1.state = Array('X', 'X', 'X', ' ', 'O', 'O', 'X', 'O', 'X')
-    board2.state = Array('X', '0', 'O', ' ', 'X', 'O', 'X', 'O', 'X')
+    board2.state = Array('X', 'O', 'O', ' ', 'X', 'O', 'X', 'O', 'X')
     board3.state = Array('O', 'X', 'O', 'O', 'X', 'O', 'O', 'O', ' ')
+    board4.state = Array(' ', 'X', 'O', 'O', ' ', 'X', ' ', ' ', 'O')
+    board5.state = Array(' ', ' ', 'O', ' ', ' ', ' ', ' ', ' ', ' ')
 
-    board.isWinning() should be(false)
-    board1.isWinning() should be(true)
-    board2.isWinning() should be(true)
-    board3.isWinning() should be(true)
+
+    board.state should be(Array(' ', 'X', ' ', 'O', ' ', 'X', ' ', ' ', 'O'))
+    board.isWinningBoard() should be(false)
+    board1.isWinningBoard() should be(true)
+    board2.isWinningBoard() should be(true)
+    board3.isWinningBoard() should be(true)
+    board4.isWinningBoard() should be(false)
+    board5.isWinningBoard() should be(false)
+
   }
+
+  // I made these helper functions private
+//  "A helper" should "be right" in {
+//    val board4: Board = Board(boardId, players)
+//    val l = List(Array(' ', ' ', ' '), Array(' ', 'X', 'X'), Array('X', 'O', 'X'))
+//     board4.checkWin(l) should be(false)
+//  }
 
   "A Game" should "know when full" in {
     val board1: Board = Board(boardId, players)
