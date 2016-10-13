@@ -1,0 +1,2 @@
+web: target/universal/stage/bin/tonguetiedtiger -Dhttp.port=${PORT}
+console: target/universal/stage/bin/tonguetiedtiger -main scala.tools.nsc.MainGenericRunner -usejavacp
