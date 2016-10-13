@@ -7,13 +7,12 @@ import datastore.GameDAOMockImpl._
 
 class ModelsTest extends FlatSpec with Matchers {
 
-  val player1Id = UUID.randomUUID
-  val player1: Player = new Player(player1Id, 2)
-  val player2: Player = new Player(UUID.randomUUID, 3)
+  val player1Id = "pritika"
+  val player1: Player = Player(player1Id, 'X')
+  val player2: Player = Player("lindsey", 'O')
   val players = Array( player1, player2 )
-  val state: Array[Int] = Array.fill(9)(0)
-  val boardId = UUID.randomUUID()
-  val board: Board = new Board(boardId, players, state, true)
+  val boardId = "boardchannel"
+  val board: Board = Board(boardId, players)
 
   "A Player" should "have an id field" in {
 
@@ -21,8 +20,8 @@ class ModelsTest extends FlatSpec with Matchers {
   }
 
   "A Board" should "initialize empty" in {
-    state(0) should be(0)
-    state(8) should be(0)
+    board.state(0) should be(' ')
+    board.state(8) should be(' ')
   }
 
   "A DAO" should "insert a new value and check to see if contains" in {
@@ -31,7 +30,7 @@ class ModelsTest extends FlatSpec with Matchers {
   }
 
   "A DAO" should "return the correct board in ds" in {
-    val b2 = new Board(UUID.randomUUID, players, state, false)
+    val b2 = Board("chan", players)
     insertBoard(b2)
     getBoard(boardId) should be (Some(board))
   }

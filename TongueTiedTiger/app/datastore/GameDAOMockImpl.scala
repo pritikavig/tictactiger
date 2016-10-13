@@ -1,7 +1,7 @@
 package datastore
 import scala.collection.mutable._
 import models.Board
-import java.util.UUID
+
 
 
 
@@ -12,10 +12,10 @@ import java.util.UUID
 object GameDAOMockImpl extends GameDAO {
 
   /* Static hash table as in memory controllers.datastore */
-  private val GameDataStore: HashMap[UUID,Board] = HashMap[UUID,Board]()
+  private val GameDataStore: HashMap[String,Board] = HashMap[String,Board]()
 
   /* check to see if board is already in datastore */
-  def containsBoard(boardId: UUID): Boolean ={
+  def containsBoard(boardId: String): Boolean ={
     GameDataStore.contains(boardId)
   }
 
@@ -31,7 +31,7 @@ object GameDAOMockImpl extends GameDAO {
   }
 
   /* get the current board from memory */
-  def getBoard(boardId: UUID): Option[Board] = {
+  def getBoard(boardId: String): Option[Board] = {
     GameDataStore.get(boardId)
   }
 

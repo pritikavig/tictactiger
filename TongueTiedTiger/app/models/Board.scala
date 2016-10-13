@@ -1,11 +1,10 @@
 package models
 
-import java.util.UUID
 
 /*
  Generates a board to hold the state of a game
  */
-case class Board( boardId: UUID,
+case class Board( boardId: String,
                   players: Array[Player],
                   var state: Array[Char] = Array.fill(9)(' '),
                   var turnIsPlayer1: Boolean = true

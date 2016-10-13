@@ -1,12 +1,12 @@
 package datastore
 import models.Board
-import java.util.UUID
+
 
 
 trait GameDAO {
 
   /* check to see if board is already in datastore */
-  def containsBoard(boardId: UUID): Boolean
+  def containsBoard(boardId: String): Boolean
 
   /* if no board exists for current channel, insert & return true */
   def insertBoard(board: Board): Boolean
@@ -15,7 +15,7 @@ trait GameDAO {
   def saveBoard(board: Board): Option[Board]
 
   /* get the current board from memory */
-  def getBoard(boardId: UUID): Option[Board]
+  def getBoard(boardId: String): Option[Board]
 
 
 }
