@@ -1,8 +1,11 @@
 package controllers
 
+import Engine.TicTacToeEngine
 import javax.inject._
 import play.api.mvc._
-
+import play.api.libs.json._
+import Engine.CommandEngine
+import services.SlackData
 /*
 
   Supported actions:
@@ -19,27 +22,26 @@ import play.api.mvc._
  */
 
 @Singleton
-class HomeController @Inject() extends Controller {
+class HomeController @Inject() ( ttt: TicTacToeEngine,
+                                 c: CommandEngine) extends Controller {
+
+  def sendMessage(message: String ): JsValue = {
+
+    val sendBack = """{ "response_type": "in_channel", "text": " """ + message + """ "}"""
+
+    Json.parse(sendBack)
+
+  }
 
   def index = Action { request =>
 
-    /* --- Hacky Slack Client -- my apologies ---- */
-    val token: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("token").flatMap(_.headOption))
-    val teamId: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("team_id").flatMap(_.headOption))
-    val teamDomain: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("team_domain").flatMap(_.headOption))
-    val channelId: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("channel_id").flatMap(_.headOption))
-    val channelName: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("channel_name").flatMap(_.headOption))
-    val userId: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("user_id").flatMap(_.headOption))
-    val username: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("user_name").flatMap(_.headOption))
-    val command: Option[String] = request.body.asFormUrlEncoded.flatMap(m => m.get("text").flatMap(_.headOption))
-
-    Ok(request.body.toString)
-
+    val slackData = new SlackData(request)
+    (slackData.command, slackData.channelId) match {
+      case (Some(command), Some(cid)) => Ok(sendMessage(c.sortCommands(command, cid))).as("application/json")
+      case _ => BadRequest("Error sending data.")
+    }
   }
 
 }
 
 
-object Command extends Enumeration {
-
-}

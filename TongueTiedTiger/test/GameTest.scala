@@ -1,6 +1,5 @@
 import models.{Player, Board, Move}
 import org.scalatest._
-import java.util.UUID
 
 
 class GameTest extends FlatSpec with Matchers {
@@ -18,29 +17,29 @@ class GameTest extends FlatSpec with Matchers {
   }
 
   "A Game" should "make a move" in {
-    val move = Move(1, player1)
+    val move = Move(1, player1Id)
     board.makeMove(move) should be(true)
     board.state(1) should be ('X')
   }
 
   "A Game" should "not allow an illegal player to move" in {
 
-    val move = Move(2, player1)
+    val move = Move(2, player1Id)
     board.whoseTurn() should be(players(1))
     board.makeMove(move) should be(false)
   }
 
   "A Game" should "not allow an illegal move" in {
-    val move1 = Move(1, board.whoseTurn())
+    val move1 = Move(1, board.whoseTurn().playerId)
     board.makeMove(move1) should be(false)
   }
 
   "A Game" should "alternate players" in {
-    val move1 = Move(3, players(1))
+    val move1 = Move(3, players(1).playerId)
     board.makeMove(move1)
-    val move2 = Move(5, players(0))
+    val move2 = Move(5, players(0).playerId)
     board.makeMove(move2)
-    val move3 = Move(8, players(1))
+    val move3 = Move(8, players(1).playerId)
     board.makeMove(move3)
 
     board.state(3) should be('O')

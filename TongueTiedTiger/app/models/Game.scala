@@ -3,6 +3,7 @@ package models
 /*
   Actions that a Game must implement
  */
+
 trait Game {
 
   def whoseTurn(): Player

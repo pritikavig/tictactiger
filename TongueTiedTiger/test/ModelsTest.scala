@@ -1,11 +1,11 @@
 
-import models.{Player, Board}
+import models.{Board, Player}
 import org.scalatest._
-import java.util.UUID
-import datastore.GameDAOMockImpl._
+import javax.inject._
+import datastore.GameDAO
 
 
-class ModelsTest extends FlatSpec with Matchers {
+class ModelsTest @Inject() (gd: GameDAO )extends FlatSpec with Matchers {
 
   val player1Id = "pritika"
   val player1: Player = Player(player1Id, 'X')
@@ -25,14 +25,14 @@ class ModelsTest extends FlatSpec with Matchers {
   }
 
   "A DAO" should "insert a new value and check to see if contains" in {
-    insertBoard(board) should be(true)
-    containsBoard(boardId) should be(true)
+    gd.insertBoard(board) should be(true)
+    gd.containsBoard(boardId) should be(true)
   }
 
   "A DAO" should "return the correct board in ds" in {
     val b2 = Board("chan", players)
-    insertBoard(b2)
-    getBoard(boardId) should be (Some(board))
+    gd.insertBoard(b2)
+    gd.getBoard(boardId) should be (Some(board))
   }
 
 }

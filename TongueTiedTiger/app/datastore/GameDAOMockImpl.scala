@@ -8,8 +8,8 @@ import models.Board
 /*
   The GameDAO mock impl stores the current boards in memory - will be wiped when server is restarted
  */
-
-object GameDAOMockImpl extends GameDAO {
+@Singleton
+class GameDAOMockImpl extends GameDAO {
 
   /* Static hash table as in memory controllers.datastore */
   private val GameDataStore: HashMap[String,Board] = HashMap[String,Board]()
